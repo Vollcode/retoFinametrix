@@ -1,0 +1,41 @@
+[
+  {
+    "name" : "Juan Diego",
+    "lastname" : "Martin",
+    "country" : "Spain",
+    "city" : "Valencia",
+    "postalCode" : 46017,
+    "address" : "La Torre",
+    "phone" : 600600600,
+    "email" : "testmail@gmail.com",
+    "user" : "jdmartinbr",
+    "password" : "sda6fa97ad78fadf0s",
+    "active" : true
+  },
+  {
+    "name" : "Eloy",
+    "lastname" : "Galdon",
+    "country" : "Spain",
+    "city" : "Valencia",
+    "postalCode" : 46006,
+    "address" : "Ruzafa",
+    "phone" : 611611611,
+    "email" : "testmail@gmail.com",
+    "user" : "eloygaldon",
+    "password" : "sda6fa97ad78fadf0s",
+    "active" : true
+  },
+  {
+    "name" : "Fernando",
+    "lastname" : "Moncanut",
+    "country" : "Spain",
+    "city" : "Valencia",
+    "postalCode" : 46006,
+    "address" : "Benimaclet",
+    "phone" : 622622622,
+    "email" : "testmail@gmail.com",
+    "user" : "fermonx",
+    "password" : "sda6fa97ad78fadf0s",
+    "active" : true
+  }
+]
