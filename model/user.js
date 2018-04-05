@@ -1,4 +1,6 @@
-new Schema(  {
+let mongoose = require('mongoose');
+
+var userModelSchema = new Schema({
     name : String,
     lastname : String,
     country : String,
@@ -11,3 +13,5 @@ new Schema(  {
     password : String,
     active : Boolean
   })
+
+  module.exports= userModelSchema

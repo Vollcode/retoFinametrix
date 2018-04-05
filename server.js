@@ -13,19 +13,7 @@ dbConnection.on('error', console.error.bind(console, 'MongoDB connection error:'
 
 var Schema = mongoose.Schema;
 
-var userModelSchema = new Schema({
-    name : String,
-    lastname : String,
-    country : String,
-    city : String,
-    postalCode : Number,
-    address : String,
-    phone : Number,
-    email : String,
-    user : String,
-    password : String,
-    active : Boolean
-  })
+var userModelSchema = require('./mode/user')
 
 // Compile model from schema
 var userModel = mongoose.model('userModel', userModelSchema );
