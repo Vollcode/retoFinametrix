@@ -5,23 +5,11 @@ let userModelSchema = require('./models/user')
 let bootcampModelSchema = require('./models/bootcamp')
 let cors = require('cors')
 let app = express();
-let Schema = mongoose.Schema;
 var index = require('./routes/index');
-let dbConnection = require('./connection/mongoconnection')
+var dbConnection = require('./connection/mongoconnection')
 
 //CORS OPTIONS
-let whitelist = ['http://equipodemexico.com', 'http://localhost:8080']
-let corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-
-// app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

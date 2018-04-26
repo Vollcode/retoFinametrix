@@ -26,27 +26,48 @@ router.get('/registro', function(req, res){
   res.send("Registro");
 });
 
-
-router.get('/bootcamps', function(req, res){
-    var result = bootcampModel.find()
-    res.send(bootcampModel.find())
-});
-
 router.get('/bootcamps/:id', function(req, res){
-  var result = bootcampModel.find({ 'id':req.params.id })
-  res.send(result);
-});
-
-
-router.get('/usuarios', function(req, res){
-    var result = userModel.find()
-    res.send(result)
+  bootcampModel.findById(req.params.id,function(err,bootcamp){
+  if(err){
+    if (err) return handleError(err);
+  } else{
+    res.send(bootcamp);
+  }
+})
 });
 
 router.get('/usuarios/:id', function(req, res){
-  var result = userModel.find({'id':req.params.id})
-  res.send(result);
+  userModel.findById(req.params.id,function(err,users){
+    if(err){
+      if (err) return handleError(err);
+    } else{
+      res.send(users);
+    }
+  })
 });
+
+router.get('/usuarios', function(req, res){
+    userModel.find({}, function(err,users){
+      if(err){
+          if (err) return handleError(err);
+       } else{
+           res.send(users);
+           console.log('retrieved list of names', users.length);
+       }
+    })
+});
+
+router.get('/bootcamps', function(req, res){
+    bootcampModel.find({},function(err,bootcamps){
+    if(err){
+        if (err) return handleError(err);
+     } else{
+         res.send(bootcamps);
+         console.log('retrieved list of names', bootcamps.length);
+     }
+  })
+});
+
 
 router.post('/usuario', function(req,res){
   userModel.create({
