@@ -1,0 +1,16 @@
+[
+  {
+    "record_type" : "VA",
+    "ISIN" : "ES0000000002",
+    "Name" : "FINAFUND EUROPEAN",
+    "Currency" : "EUR",
+    "Family" : "RENTA FIJA"
+  },
+  {
+    "record_type" : "VA",
+    "ISIN" : "ES0000000001",
+    "Name" : "FINAFUND IBERIAN",
+    "Currency" : "EUR",
+    "Family" : "RENTA VARIABLE"
+  }
+]

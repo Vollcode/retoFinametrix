@@ -1,2 +1,2 @@
-# Backend_MexicoSpain
-Repository made for the backend code and functionalities for the Geekshub Academy project between the Mexican and Spanish coworking spaces. 
+# Reto_Finametrix_DO
+Repository made for the backend code, GUI and functionalities for the Finametrix company project. 

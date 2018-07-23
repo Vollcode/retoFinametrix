@@ -1,8 +1,8 @@
 let mongoose = require('mongoose');
 let express = require("express");
 let bodyParser = require('body-parser')
-let userModelSchema = require('./models/user')
-let bootcampModelSchema = require('./models/bootcamp')
+let recordsVAModelSchema = require('./models/recordVA')
+let recordsVLModelSchema = require('./models/recordVL')
 let cors = require('cors')
 let app = express();
 var index = require('./routes/index');
@@ -16,8 +16,8 @@ app.use(bodyParser.json())
 
 
 // Compile model from schema
-var userModel = mongoose.model('userModel', userModelSchema );
-var bootcampModel = mongoose.model('bootcampModel', bootcampModelSchema);
+var recordVAModel = mongoose.model('recordVAModel', recordsVAModelSchema );
+var recordVLModel = mongoose.model('recordVLModel', recordsVLModelSchema );
 
 app.use('/', index);
 
