@@ -10,25 +10,35 @@
       <div class="form-group">
         <input type="file" name="file" class="form-control form-control">
       </div>
-      <input type="submit" name="" value="Upload File">
+      <input type="submit" value="Upload File">
     </form>
     -------------------------
     <h3>Encuentra la información financiera que buscas:</h3>
-    <form action="api/performance" method="get">
+    <form action="api/performance/" method="get">
       <input type="text" name="ISIN" value="" placeholder="ISIN">
       <input type="text" name="dateFrom" value="" placeholder="Date from">
       <input type="text" name="dateTo" value="" placeholder="Date to">
-      <input type="submit" name="" value="Enviar datos">
+      <input type="submit" value="Enviar datos">
     </form>
 
-    <p>Aquí tienes la información solicitada:</p>
-    <p>date from:</p>
-    <p>date to:</p>
+    {{#if records}}
+    <p>Resultados del fichero analizado:</p>
+    <p>Líneas procesadas: {{ records.processed_records }}</p>
+    <p>Errores encontrados: {{ records.errors_found }}</p>
 
-    {{#if isin}}
+    <p>Cálculo de rentabilidad:</p>
+    <p>Cálculo de volatilidad:</p>
+    {{else}}
+    {{/if}}
+
+    {{#if ISIN}}
       <p>Aquí tienes la información solicitada:</p>
-      <p>date from:</p>
-      <p>date to:</p>
+      <p>Con el ISIN: {{ ISIN }}</p>
+      <p>Desde la fecha: {{ dateFrom }}</p>
+      <p>Hasta la fecha: {{ dateTo }}</p>
+
+      <p>Cálculo de rentabilidad:{{ result }}</p>
+      <p>Cálculo de volatilidad:</p>
     {{else}}
     {{/if}}
 

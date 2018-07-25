@@ -19,14 +19,8 @@ router.get('/', function(req, res){
   res.render("index.hbs");
 });
 
-router.get('/api/performance/:isin/:dateFrom/:dateTo', function(req, res){
-  // recordModel.findById(req.params.id,function(err,users){
-  //   if(err){
-  //     if (err) return handleError(err);
-  //   } else{
-  //     res.send(users);
-  //   }
-  // })
+router.get('/api/performance', function(req, res){
+  recordController.getFileData(req,res)
 });
 
 router.post('/saveRecord', upload.single('file'),function(req,res,next){
