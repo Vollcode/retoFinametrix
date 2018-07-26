@@ -23,7 +23,8 @@ let recordController = {};
 recordController.postSaveFile=function(req,res,next){
   var result = {
     processed_records: 0,
-    errors_found: 0
+    errors_found: 0,
+    error_display: []
   }
 
   fs.createReadStream(req.file.path)
@@ -57,7 +58,7 @@ recordController.postSaveFile=function(req,res,next){
           recordVLModel.create({
             record_type : arrayData[0],
             ISIN : arrayData[1],
-            Date : helper.parseDate(arrayData[2]),
+            Date : parseInt(arrayData[2]),
             Price : arrayData[3]
           }, function (err, modelInstance) {
             if (err) return handleError(err);
@@ -66,6 +67,7 @@ recordController.postSaveFile=function(req,res,next){
         }else {
           result.processed_records += 1
           result.errors_found += 1
+          result.error_display.push(arrayData)
         }
       } else {
         res.sendStatus(400);
@@ -80,54 +82,51 @@ recordController.postSaveFile=function(req,res,next){
 }
 
 recordController.getFileData=function(req,res,next){
-  var isin = req.query.ISIN;
-  var dateFrom = helper.parseDate(req.query.dateFrom);
-  var dateTo = helper.parseDate(req.query.dateTo);
-  var fileData = {
+  let isin = req.query.ISIN;
+  let dateFrom = parseInt(req.query.dateFrom);
+  let dateTo = parseInt(req.query.dateTo);
+  let fileData = {
     performances: 0,
     volatility: 0
   }
 
-  var initialDatePrices = 0;
-  var endDatePrices = 0;
+  let initialDatePrices = 0;
+  let endDatePrices = 0;
 
-  recordVAModel.find({ 'ISIN': isin },'Name',function(err,result){
-    if(result.length > 0){
-      var query = recordVLModel.find({'ISIN': isin},['Date','Price']);
-      query.or([{'Date':dateFrom},{'Date':dateTo}]);
-       query.exec(function(err, results){
-         results.forEach(function(line) {
-           var floatPrice = line.Price.replace(/,/g, ".")
-           if(helper.compareDates(dateFrom,line.Date)){
-              initialDatePrices += parseFloat(floatPrice)
-           }
-           if(helper.compareDates(dateTo,line.Date)){
-              endDatePrices += parseFloat(floatPrice)
-           }
-         });
-         fileData.performances = helper.calculatePerformance(initialDatePrices,endDatePrices)
+  let queryPerformance = recordVLModel.find({'ISIN': isin},['Date','Price']);
+  queryPerformance.or([{'Date':dateFrom},{'Date':dateTo}]);
+   queryPerformance.exec(function(err, results){
+     if (err) return handleError(err);
 
-         res.render('index',{
-           ISIN: isin,
-           dateFrom: dateFrom,
-           dateTo : dateTo,
-           result: fileData.performances
-         });
-       })
-    }else {
-      if (err) return handleError(err);
-      res.redirect("/")
-    }
-    if(err){
-      if (err) return handleError(err);
-      res.render('index',{
-        ISIN: isin,
-        dateFrom: dateFrom,
-        dateTo : dateTo,
-        result: fileData.performances
-      });
-    }
-  })
+     results.forEach(function(line) {
+       var floatPrice = line.Price.replace(/,/g, ".")
+       if(helper.compareDates(dateFrom,line.Date)){
+          initialDatePrices += parseFloat(floatPrice)
+       }
+       if(helper.compareDates(dateTo,line.Date)){
+          endDatePrices += parseFloat(floatPrice)
+       }
+     });
+
+     fileData.performances = helper.calculatePerformance(initialDatePrices,endDatePrices)
+
+     recordVLModel.find({'ISIN': isin,'Date':{"$gte":dateFrom,"$lte":dateTo}},['Date','Price'], function(err,results){
+       let average = helper.calculateAverage(results)
+       let variance = helper.calculateVariance(results,average)
+       let volatility = Math.sqrt(variance)
+       fileData.volatility = volatility
+       res.render('index',{
+         ISIN: isin,
+         dateFrom: dateFrom,
+         dateTo : dateTo,
+         volatility: fileData.volatility,
+         performances: fileData.performances
+       });
+     });
+
+
+   });
+
 }
 
 module.exports = recordController;

@@ -26,8 +26,10 @@
     <p>Líneas procesadas: {{ records.processed_records }}</p>
     <p>Errores encontrados: {{ records.errors_found }}</p>
 
-    <p>Cálculo de rentabilidad:</p>
-    <p>Cálculo de volatilidad:</p>
+      <p>Lineas erróneas:</p>
+      {{#each records.error_display }}
+        <p style="color:red">{{this}}</p>
+      {{/each}}
     {{else}}
     {{/if}}
 
@@ -37,8 +39,8 @@
       <p>Desde la fecha: {{ dateFrom }}</p>
       <p>Hasta la fecha: {{ dateTo }}</p>
 
-      <p>Cálculo de rentabilidad:{{ result }}</p>
-      <p>Cálculo de volatilidad:</p>
+      <p>Cálculo de rentabilidad:{{ performances }}</p>
+      <p>Cálculo de volatilidad: {{ volatility }}</p>
     {{else}}
     {{/if}}
 
