@@ -1,8 +1,8 @@
 let mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var recordVAModelSchema = new Schema({
+let recordVAModelSchema = new Schema({
   record_type : String,
   ISIN : String,
   Name : String,

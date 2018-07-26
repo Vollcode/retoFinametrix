@@ -2,15 +2,15 @@
 var express = require('express');
 var router = express.Router();
 
-var helper = require('../helpers/index')
+let helper = require('../helpers/index')
 
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let recordsVAModelSchema = require('../models/recordVA')
 let recordsVLModelSchema = require('../models/recordVL')
-var recordVAModel = mongoose.model('recordVAModel', recordsVAModelSchema);
-var recordVLModel = mongoose.model('recordVLModel', recordsVLModelSchema);
+let recordVAModel = mongoose.model('recordVAModel', recordsVAModelSchema);
+let recordVLModel = mongoose.model('recordVLModel', recordsVLModelSchema);
 
 const Multer = require('multer');
 const upload = require('../config/multer');
@@ -21,7 +21,7 @@ let csv = require('fast-csv');
 let recordController = {};
 
 recordController.postSaveFile=function(req,res,next){
-  var result = {
+  let result = {
     processed_records: 0,
     errors_found: 0,
     error_display: []
@@ -36,9 +36,9 @@ recordController.postSaveFile=function(req,res,next){
         currentData = data[0] + "," + data[1].substring(0, 2);
       }
       if(currentData != undefined){
-        var arrayData = currentData.split(";");
+        let arrayData = currentData.split(";");
       }else {
-        var arrayData = data[0].split(";");
+        let arrayData = data[0].split(";");
       }
 
       if(arrayData[0]=="VA"){

@@ -9,8 +9,8 @@ let recordsVLModelSchema = require('./models/recordVL')
 let cors = require('cors')
 let app = express();
 
-var index = require('./routes/index');
-var dbConnection = require('./connection/mongoconnection')
+let index = require('./routes/index');
+let dbConnection = require('./connection/mongoconnection')
 
 app.use(express.static(__dirname + '/views'));
 //Store all HTML files in view folder.
@@ -24,8 +24,8 @@ app.use(bodyParser.json())
 app.set( 'view engine', 'hbs' );
 
 // Compile model from schema
-var recordVAModel = mongoose.model('recordVAModel', recordsVAModelSchema );
-var recordVLModel = mongoose.model('recordVLModel', recordsVLModelSchema );
+let recordVAModel = mongoose.model('recordVAModel', recordsVAModelSchema );
+let recordVLModel = mongoose.model('recordVLModel', recordsVLModelSchema );
 
 app.use('/', index);
 
