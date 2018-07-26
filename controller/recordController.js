@@ -54,7 +54,7 @@ recordController.postSaveFile=function(req,res,next){
           result.processed_records += 1
         });
       }else if(arrayData[0]=="VL") {
-        if(helper.checkDate(arrayData[2])) {
+        if(helper.checkDate(arrayData[2]) && helper.checkNumber(arrayData[3])) {
           recordVLModel.create({
             record_type : arrayData[0],
             ISIN : arrayData[1],
@@ -90,43 +90,23 @@ recordController.getFileData=function(req,res,next){
     volatility: 0
   }
 
-  let initialDatePrices = 0;
-  let endDatePrices = 0;
-
   let queryPerformance = recordVLModel.find({'ISIN': isin},['Date','Price']);
   queryPerformance.or([{'Date':dateFrom},{'Date':dateTo}]);
    queryPerformance.exec(function(err, results){
      if (err) return handleError(err);
 
-     results.forEach(function(line) {
-       var floatPrice = line.Price.replace(/,/g, ".")
-       if(helper.compareDates(dateFrom,line.Date)){
-          initialDatePrices += parseFloat(floatPrice)
-       }
-       if(helper.compareDates(dateTo,line.Date)){
-          endDatePrices += parseFloat(floatPrice)
-       }
-     });
-
-     fileData.performances = helper.calculatePerformance(initialDatePrices,endDatePrices)
+     fileData.performances = helper.calculatePerformance(results,dateFrom,dateTo)
 
      recordVLModel.find({'ISIN': isin,'Date':{"$gte":dateFrom,"$lte":dateTo}},['Date','Price'], function(err,results){
        let average = helper.calculateAverage(results)
        let variance = helper.calculateVariance(results,average)
        let volatility = Math.sqrt(variance)
        fileData.volatility = volatility
-       res.render('index',{
-         ISIN: isin,
-         dateFrom: dateFrom,
-         dateTo : dateTo,
-         volatility: fileData.volatility,
-         performances: fileData.performances
-       });
+
+       res.setHeader('Content-Type', 'application/json');
+       res.send(JSON.stringify({ performance: fileData.performances,volatility: fileData.volatility}, null, 3));
      });
-
-
    });
-
 }
 
 module.exports = recordController;
