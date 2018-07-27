@@ -21,7 +21,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.set( 'view engine', 'hbs' );
+app.set('view engine','hbs');
 
 // Compile model from schema
 let recordVAModel = mongoose.model('recordVAModel', recordsVAModelSchema );
@@ -30,7 +30,9 @@ let recordVLModel = mongoose.model('recordVLModel', recordsVLModelSchema );
 app.use('/', index);
 
 // Start Server
-app.listen(3000, ()=> {
-    console.log('Servidor levantado en 3000');
-  }
-);
+// app.listen(3000, ()=> {
+//     console.log('Servidor levantado en 3000');
+//   }
+// );
+
+module.exports = app

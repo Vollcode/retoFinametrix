@@ -2,7 +2,9 @@
 var express = require('express');
 var router = express.Router();
 
-let helper = require('../helpers/index')
+const HelperFunctions = require('../helpers/index')
+const Controller = require('./controller');
+let helper = new HelperFunctions()
 
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
@@ -19,26 +21,35 @@ let fs = require('fs');
 let csv = require('fast-csv');
 
 let recordController = {};
-
-recordController.postSaveFile=function(req,res,next){
-  let result = {
-    processed_records: 0,
-    errors_found: 0,
-    error_display: []
+class RecordController extends Controller{
+  constructor(req,res,next){
+      super(req, res ,next)
+      this.fileData = {
+        performances: 0,
+        volatility: 0
+      }
   }
 
-  fs.createReadStream(req.file.path)
+  postSaveFile(req,res,next){
+    let result = {
+      processed_records: 0,
+      errors_found: 0,
+      error_display: []
+    }
+
+    let tmp_path = req.file.path
+    fs.createReadStream(tmp_path)
     .pipe(csv())
     .on('data',function(data){
-
+      let arrayData;
       let currentData;
       if(data.length == 2){
         currentData = data[0] + "," + data[1].substring(0, 2);
       }
       if(currentData != undefined){
-        let arrayData = currentData.split(";");
+        arrayData = currentData.split(";");
       }else {
-        let arrayData = data[0].split(";");
+        arrayData = data[0].split(";");
       }
 
       if(arrayData[0]=="VA"){
@@ -76,37 +87,49 @@ recordController.postSaveFile=function(req,res,next){
     })
     .on('end',function(data){
       res.render('index',{
-              records: result
-            });
+        records: result
+      });
     });
-}
-
-recordController.getFileData=function(req,res,next){
-  let isin = req.query.ISIN;
-  let dateFrom = parseInt(req.query.dateFrom);
-  let dateTo = parseInt(req.query.dateTo);
-  let fileData = {
-    performances: 0,
-    volatility: 0
   }
 
-  let queryPerformance = recordVLModel.find({'ISIN': isin},['Date','Price']);
-  queryPerformance.or([{'Date':dateFrom},{'Date':dateTo}]);
-   queryPerformance.exec(function(err, results){
-     if (err) return handleError(err);
+  getPerformance()
+  {
+    return new Promise((resolve,reject)=>{
+      let isin = this.req.query.ISIN;
+      let dateFrom = parseInt(this.req.query.dateFrom);
+      let dateTo = parseInt(this.req.query.dateTo);
 
-     fileData.performances = helper.calculatePerformance(results,dateFrom,dateTo)
+      let queryPerformance = recordVLModel.find({'ISIN': isin},['Date','Price']);
+      queryPerformance.or([{'Date':dateFrom},{'Date':dateTo}]);
+      queryPerformance.exec(function(err, results){
+      if (err) reject(err);
 
-     recordVLModel.find({'ISIN': isin,'Date':{"$gte":dateFrom,"$lte":dateTo}},['Date','Price'], function(err,results){
-       let average = helper.calculateAverage(results)
-       let variance = helper.calculateVariance(results,average)
-       let volatility = Math.sqrt(variance)
-       fileData.volatility = volatility
+      resolve(helper.calculatePerformance(results,dateFrom,dateTo));
+      });
+    })
+  }
 
-       res.setHeader('Content-Type', 'application/json');
-       res.send(JSON.stringify({ performance: fileData.performances,volatility: fileData.volatility}, null, 3));
-     });
-   });
+  getFileData(req,res,next){
+    let isin = req.query.ISIN;
+    let dateFrom = parseInt(req.query.dateFrom);
+    let dateTo = parseInt(req.query.dateTo);
+
+    this.getPerformance().then((data)=>{
+      let fileData = {
+        performances: data,
+        volatility: 0
+      }
+      recordVLModel.find({'ISIN': isin,'Date':{"$gte":dateFrom,"$lte":dateTo}},['Date','Price'], function(err,results){
+           let average = helper.calculateAverage(results)
+           let variance = helper.calculateVariance(results,average)
+           let volatility = Math.sqrt(variance)
+           fileData.volatility = volatility
+
+           res.setHeader('Content-Type', 'application/json');
+           res.send(JSON.stringify({ performance: fileData.performances,volatility: fileData.volatility}, null, 3));
+         })
+    })
+  }
 }
 
-module.exports = recordController;
+module.exports = RecordController;
