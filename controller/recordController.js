@@ -52,7 +52,7 @@ class RecordController extends Controller{
         arrayData = data[0].split(";");
       }
 
-      if(arrayData[0]=="VA"){
+      if(arrayData[0]=="VA" && checkISIN(arrayData[1])){
         recordVAModel.create({
           record_type : arrayData[0],
           ISIN : arrayData[1],

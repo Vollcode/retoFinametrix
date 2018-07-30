@@ -48,6 +48,9 @@ class HelperFunctions{
     return /^\d[\d,]*(\.\d+)?$/.test(number)
   }
 
+  checkISIN(isin){
+    return /^[A-Z]{2}[0-9]{10}$/g.test(isin)
+  }
 }
 
 module.exports = HelperFunctions

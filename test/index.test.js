@@ -63,6 +63,20 @@ describe('App helper functions',function(){
     assert.equal(resultLessNumbers,false)
   })
 
+  it('app should check that an ISIN has the correct format', function(){
+    let ISINCorrect = 'ES0000000001'
+    let ISINIncorrect = 'ES000000000'
+    let ISINIncorrect2 = 'E0000000001'
+
+    let result = helper.checkISIN(ISINCorrect)
+    let resultLessNumbers = helper.checkISIN(ISINIncorrect)
+    let resultOneLetter = helper.checkISIN(ISINIncorrect2)
+
+    assert.equal(result,true)
+    assert.equal(resultLessNumbers,false)
+    assert.equal(resultOneLetter,false)
+  })
+
   it('app should calculate the performance of two different dates', function(){
     let sample = [ { Date: 20000101, Price: '100' },
                  { Date: 20000101, Price: '100,01' },

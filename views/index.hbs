@@ -14,7 +14,7 @@
           <h1>Averigüa la rentabilidad de tus fondos de inversión</h1>
           <form id="uploadFile" action="/saveRecord" method="post" enctype="multipart/form-data">
             <div class="form-group">
-              <input type="file" accept=".csv" name="file" class="form-control form-control">
+              <input type="file" accept=".csv" name="file" class="form-control form-control" required>
             </div>
             <input type="submit" class="button" value="Subir archivo">
           </form>
@@ -23,13 +23,13 @@
           <h3>Encuentra la información financiera que buscas:</h3>
           <form action="api/performance/" method="get">
             <div class="form-group">
-              <input type="text" name="ISIN" value="" placeholder="ISIN">
-              <input type="text" name="dateFrom" value="" placeholder="Date from">
-              <input type="text" name="dateTo" value="" placeholder="Date to">
+              <input type="text" name="ISIN" value="" placeholder="ISIN" required>
+              <input type="text" name="dateFrom" value="" placeholder="Date from" required>
+              <input type="text" name="dateTo" value="" placeholder="Date to" required>
             </div>
             <input type="submit" class="button" value="Enviar datos">
           </form>
-          <div style="margin-bottom:1em;z-index:1000;position:absolute; top: 50%;left: 50%;" >
+          <div style="margin-bottom:1em;z-index:1000;position:absolute; top: 50%;left: 60%;" >
             <iframe id="loadingGif" style="pointer-events: none;visibility: hidden;" src='https://gfycat.com/ifr/SkinnySeveralAsianlion' frameborder='0' scrolling='no' width='300' height='300' allowfullscreen></iframe>
           </div>
         </div>
