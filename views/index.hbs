@@ -3,46 +3,70 @@
   <head>
     <meta charset="utf-8">
     <title>Finafunds Value</title>
+    <link rel='stylesheet' type="text/css" href='stylesheets/style.css'>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   </head>
   <body>
-    <h1>Averigüa la rentabilidad de tus fondos de inversión</h1>
-    <form action="/saveRecord" method="post" enctype="multipart/form-data">
-      <div class="form-group">
-        <input type="file" name="file" class="form-control form-control">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h1 class="display-4">Finafunds Value</h1>
+          <h1>Averigüa la rentabilidad de tus fondos de inversión</h1>
+          <form id="uploadFile" action="/saveRecord" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <input type="file" accept=".csv" name="file" class="form-control form-control">
+            </div>
+            <input type="submit" class="button" value="Subir archivo">
+          </form>
+          <hr>
+
+          <h3>Encuentra la información financiera que buscas:</h3>
+          <form action="api/performance/" method="get">
+            <div class="form-group">
+              <input type="text" name="ISIN" value="" placeholder="ISIN">
+              <input type="text" name="dateFrom" value="" placeholder="Date from">
+              <input type="text" name="dateTo" value="" placeholder="Date to">
+            </div>
+            <input type="submit" class="button" value="Enviar datos">
+          </form>
+          <div style="margin-bottom:1em;z-index:1000;position:absolute; top: 50%;left: 50%;" >
+            <iframe id="loadingGif" style="pointer-events: none;visibility: hidden;" src='https://gfycat.com/ifr/SkinnySeveralAsianlion' frameborder='0' scrolling='no' width='300' height='300' allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-5" style="padding-top:3em">
+
+          {{#if records}}
+          <h4>Resultados del fichero analizado:</h4>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Líneas procesadas: {{ records.processed_records }}</th>
+                  <th scope="col">Errores encontrados: {{ records.errors_found }}</th>
+                </tr>
+                <tr>
+                  <th scope="col">Líneas erróneas: </th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each records.error_display }}
+                <tr>
+                    <td style="color:red">@{{this}}</td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          {{else}}
+          {{/if}}
+        </div>
       </div>
-      <input type="submit" value="Upload File">
-    </form>
-    -------------------------
-    <h3>Encuentra la información financiera que buscas:</h3>
-    <form action="api/performance/" method="get">
-      <input type="text" name="ISIN" value="" placeholder="ISIN">
-      <input type="text" name="dateFrom" value="" placeholder="Date from">
-      <input type="text" name="dateTo" value="" placeholder="Date to">
-      <input type="submit" value="Enviar datos">
-    </form>
+    </div>
 
-    {{#if records}}
-    <p>Resultados del fichero analizado:</p>
-    <p>Líneas procesadas: {{ records.processed_records }}</p>
-    <p>Errores encontrados: {{ records.errors_found }}</p>
 
-      <p>Lineas erróneas:</p>
-      {{#each records.error_display }}
-        <p style="color:red">{{this}}</p>
-      {{/each}}
-    {{else}}
-    {{/if}}
+    <script type="text/javascript">
 
-    {{#if ISIN}}
-      <p>Aquí tienes la información solicitada:</p>
-      <p>Con el ISIN: {{ ISIN }}</p>
-      <p>Desde la fecha: {{ dateFrom }}</p>
-      <p>Hasta la fecha: {{ dateTo }}</p>
-
-      <p>Cálculo de rentabilidad:{{ performances }}</p>
-      <p>Cálculo de volatilidad: {{ volatility }}</p>
-    {{else}}
-    {{/if}}
-
+      jQuery('#uploadFile').submit(function() {
+        jQuery('#loadingGif').css('visibility', 'visible');
+      });
+    </script>
   </body>
 </html>

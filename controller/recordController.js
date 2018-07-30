@@ -61,7 +61,6 @@ class RecordController extends Controller{
           Family : arrayData[4]
         }, function (err, modelInstance) {
           if (err) return handleError(err);
-          // res.redirect("/");
           result.processed_records += 1
         });
       }else if(arrayData[0]=="VL") {
