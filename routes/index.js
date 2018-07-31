@@ -26,7 +26,7 @@ router.get('/api/performance', function(req, res,next){
   recordController.getFileData(req,res,next)
 });
 
-router.post('/saveRecord', type,function(req,res,next){
+router.post('/', type,function(req,res,next){
   let recordController = new RecordController(req,res,next);
   recordController.postSaveFile(req,res,next)
 })

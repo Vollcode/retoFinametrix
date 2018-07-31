@@ -8,3 +8,18 @@
     display: inline-block;
     font-size: 16px;
 }
+
+td {
+  color:red;
+}
+
+#loadingGifContainer {
+  margin-bottom:1em;
+  z-index:1000;
+  position:absolute; top: 50%;left: 60%;
+}
+
+#loadingGif {
+  pointer-events: none;
+  visibility: hidden;
+}

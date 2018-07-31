@@ -52,7 +52,7 @@ class RecordController extends Controller{
         arrayData = data[0].split(";");
       }
 
-      if(arrayData[0]=="VA" && checkISIN(arrayData[1])){
+      if(arrayData[0]=="VA" && helper.checkISIN(arrayData[1])){
         recordVAModel.create({
           record_type : arrayData[0],
           ISIN : arrayData[1],
@@ -80,7 +80,9 @@ class RecordController extends Controller{
           result.error_display.push(arrayData)
         }
       } else {
-        res.sendStatus(400);
+        result.processed_records += 1
+        result.errors_found += 1
+        result.error_display.push(arrayData)
       }
 
     })

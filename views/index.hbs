@@ -10,9 +10,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-7">
-          <h1 class="display-4">Finafunds Value</h1>
+          <h1 class="display-3">Finafunds Value</h1>
+          <br>
           <h1>Averigüa la rentabilidad de tus fondos de inversión</h1>
-          <form id="uploadFile" action="/saveRecord" method="post" enctype="multipart/form-data">
+          <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
             <div class="form-group">
               <input type="file" accept=".csv" name="file" class="form-control form-control" required>
             </div>
@@ -29,8 +30,8 @@
             </div>
             <input type="submit" class="button" value="Enviar datos">
           </form>
-          <div style="margin-bottom:1em;z-index:1000;position:absolute; top: 50%;left: 60%;" >
-            <iframe id="loadingGif" style="pointer-events: none;visibility: hidden;" src='https://gfycat.com/ifr/SkinnySeveralAsianlion' frameborder='0' scrolling='no' width='300' height='300' allowfullscreen></iframe>
+          <div id="loadingGifContainer" >
+            <iframe id="loadingGif" src='https://gfycat.com/ifr/SkinnySeveralAsianlion' frameborder='0' scrolling='no' width='300' height='300' allowfullscreen></iframe>
           </div>
         </div>
         <div class="col-md-5" style="padding-top:3em">
@@ -50,7 +51,7 @@
               <tbody>
                 {{#each records.error_display }}
                 <tr>
-                    <td style="color:red">@{{this}}</td>
+                    <td>{{this}}</td>
                 </tr>
                 {{/each}}
               </tbody>

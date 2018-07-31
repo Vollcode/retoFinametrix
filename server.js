@@ -6,8 +6,6 @@ const hbs = require('hbs');
 let morgan = require('morgan')
 var timeout = require('connect-timeout');
 
-let recordsVAModelSchema = require('./models/recordVA')
-let recordsVLModelSchema = require('./models/recordVL')
 let cors = require('cors')
 let app = express();
 
