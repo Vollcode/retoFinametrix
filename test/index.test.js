@@ -24,7 +24,7 @@ describe("Homepage csv load and query functionality", function(){
   })
 
   it("sends a file", function(done){
-    request(app).post("/saveRecord")
+    request(app).post("/")
 
       .attach('file', 'test/fixtures/ejemplo.csv')
 

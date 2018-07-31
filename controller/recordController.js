@@ -60,25 +60,20 @@ class RecordController extends Controller{
           Currency : arrayData[3],
           Family : arrayData[4]
         }, function (err, modelInstance) {
-          if (err) return handleError(err);
+          if (err) next(err);
           result.processed_records += 1
         });
-      }else if(arrayData[0]=="VL") {
-        if(helper.checkDate(arrayData[2]) && helper.checkNumber(arrayData[3])) {
-          recordVLModel.create({
-            record_type : arrayData[0],
-            ISIN : arrayData[1],
-            Date : parseInt(arrayData[2]),
-            Price : arrayData[3]
-          }, function (err, modelInstance) {
-            if (err) return handleError(err);
-            result.processed_records += 1
-          });
-        }else {
+      }else if(arrayData[0]=="VL" && helper.checkDate(arrayData[2])
+      && helper.checkNumber(arrayData[3])) {
+        recordVLModel.create({
+          record_type : arrayData[0],
+          ISIN : arrayData[1],
+          Date : parseInt(arrayData[2]),
+          Price : arrayData[3]
+        }, function (err, modelInstance) {
+          if (err) next(err);
           result.processed_records += 1
-          result.errors_found += 1
-          result.error_display.push(arrayData)
-        }
+        });
       } else {
         result.processed_records += 1
         result.errors_found += 1
