@@ -1,10 +1,12 @@
+let createError = require('http-errors');
 let mongoose = require('mongoose');
 let express = require("express");
+let favicon = require('serve-favicon')
 const path = require('path');
 let bodyParser = require('body-parser')
 const hbs = require('hbs');
 let morgan = require('morgan')
-var timeout = require('connect-timeout');
+let timeout = require('connect-timeout');
 
 let cors = require('cors')
 let app = express();
@@ -18,6 +20,8 @@ app.use(express.static(__dirname + '/public'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 //Store all HTML files in view folder.
 
 //CORS OPTIONS
