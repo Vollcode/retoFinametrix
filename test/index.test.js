@@ -86,7 +86,7 @@ describe('App helper functions',function(){
 
     let result = helper.calculatePerformance(sample,dateFrom,dateTo)
 
-    assert.equal(result,-0.5000249987500625)
+    assert.equal(result,-0.00004999750012494828)
   })
 
   it('app should calculate the price average', function(){
