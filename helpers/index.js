@@ -5,20 +5,25 @@ class HelperFunctions{
 
   calculatePerformance(results,dateFrom,dateTo){
     let initialDatePrices = 0;
+    let initialDatePricesCount = 0;
     let endDatePrices = 0;
+    let endDatePricesCount = 0;
 
     results.forEach(function(line) {
       var floatPrice = line.Price.replace(/,/g, ".")
       if(dateFrom == line.Date){
          initialDatePrices += parseFloat(floatPrice)
+         initialDatePricesCount += 1
       }
       if(dateTo == line.Date){
          endDatePrices += parseFloat(floatPrice)
+         endDatePricesCount += 1
       }
     });
 
-    return ((endDatePrices - initialDatePrices)/initialDatePrices)
-    // return ((endDatePrices - initialDatePrices)/initialDatePrices).toFixed(3)
+    var initialDateResult = initialDatePrices/initialDatePricesCount;
+    var endDateResult = endDatePrices/endDatePricesCount;
+    return ((endDateResult - initialDateResult)/initialDateResult);
   }
 
   calculateAverage(lines){
